@@ -1,0 +1,10 @@
+# Configure Cloudflare Worker
+
+name = 'hosting-cloudflare-worker'
+compatibility_date = "2025-05-26"
+
+[build]
+command = "./build.sh"
+
+[assets]
+directory = "./public"
