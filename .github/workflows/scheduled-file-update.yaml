@@ -1,9 +1,12 @@
+# This cron job periodically updates the scheduled-file-update.txt file in the
+# root of this repository. Each update trigger a Cloudflare Worker build.
+
 name: Scheduled File Update
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '37 21 * * *'
+    - cron: '57 21 * * *'
 
 jobs:
   update-file:
@@ -25,7 +28,7 @@ jobs:
 
       - name: Update file with current timestamp
         run: |
-          FILE_TO_UPDATE="updated_log.txt"
+          FILE_TO_UPDATE="scheduled-file-update.txt"
           echo "$(date '+%Y-%m-%d %H:%M:%S')" > "${FILE_TO_UPDATE}"
 
       - name: Commit and push changes
