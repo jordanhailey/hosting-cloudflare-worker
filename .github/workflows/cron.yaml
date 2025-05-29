@@ -1,30 +1,21 @@
 name: Scheduled File Update
 
 on:
-  schedule:
-    # Runs every day at 21:00 UTC
-    # You can customize this cron expression:
-    # For example:
-    #   - '0 0 * * *'  (every day at midnight UTC)
-    #   - '0 */6 * * *' (every 6 hours)
-    #   - '*/15 * * * *' (every 15 minutes)
-    - cron: '0 21 * * *'
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
 
 jobs:
   update-file:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write # Grant write permissions to the GITHUB_TOKEN
+      contents: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # Required for pushing changes back to the repository
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure Git
@@ -34,21 +25,13 @@ jobs:
 
       - name: Update file with current timestamp
         run: |
-          # Define the file to be updated
           FILE_TO_UPDATE="updated_log.txt"
-
-          # Create the file if it doesn't exist, then append the timestamp
-          echo "File last updated: $(date '+%Y-%m-%d %H:%M:%S')" >> "${FILE_TO_UPDATE}"
+          echo "File last updated: $(date '+%Y-%m-%d %H:%M:%S')" > "${FILE_TO_UPDATE}"
           echo "Appended timestamp to ${FILE_TO_UPDATE}"
 
       - name: Commit and push changes
         run: |
-          # Check if there are any changes to commit
-          if git diff --exit-code --quiet; then
-            echo "No changes to commit."
-          else
-            git add .
-            git commit -m "Automated: Update ${FILE_TO_UPDATE} via scheduled job"
-            git push
-            echo "Changes committed and pushed."
-          fi
+          git add .
+          git commit -m "Automated: Update ${FILE_TO_UPDATE} via scheduled job"
+          git push
+          echo "Changes committed and pushed."
