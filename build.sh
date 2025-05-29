@@ -15,6 +15,8 @@ main() {
   DART_SASS_VERSION=1.89.0
   HUGO_VERSION=0.147.5
 
+  export TZ=Europe/Oslo
+
   # Install Dart Sass
   echo "Installing Dart Sass v${DART_SASS_VERSION}..."
   curl -LJO "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz"
