@@ -12,8 +12,8 @@
 
 main() {
 
-  DART_SASS_VERSION=1.89.0
-  HUGO_VERSION=0.147.5
+  DART_SASS_VERSION=1.89.1
+  HUGO_VERSION=0.147.7
 
   export TZ=Europe/Oslo
 
