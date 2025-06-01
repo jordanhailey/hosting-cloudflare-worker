@@ -11,6 +11,23 @@ enableGitInfo        = true
   dir = ':cacheDir/images'
 
 # -----------------------------------------------------------------------------
+# Cascades
+# -----------------------------------------------------------------------------
+
+[[cascade]]
+[cascade.build]
+list = 'never'
+render = 'never'
+[cascade.target]
+path = '/error-pages'
+
+[[cascade]]
+[cascade.build]
+list = 'never'
+[cascade.target]
+path = '/error-pages/*'
+
+# -----------------------------------------------------------------------------
 # Markup
 # -----------------------------------------------------------------------------
 
