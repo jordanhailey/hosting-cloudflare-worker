@@ -6,7 +6,7 @@ name: Scheduled File Update
 on:
   workflow_dispatch:
   schedule:
-    - cron: '57 21 * * *'
+    - cron: '57 23 * * *'
 
 jobs:
   update-file:

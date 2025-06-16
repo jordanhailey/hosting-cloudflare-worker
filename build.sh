@@ -2,54 +2,53 @@
 
 #------------------------------------------------------------------------------
 # @file
-# Builds a Hugo site hosted on a Cloudflare Worker.
+# Builds a HyperTemplates site hosted on a Cloudflare Worker.
 #
-# The Cloudflare Worker build image already includes Go, Hugo (an old version),
-# and Node js. Set the desired Dart Sass and Hugo versions below.
+# The Cloudflare Worker build image already includes Go,
+# and Node js. Set the desired HyperTemplates CLI version below.
 #
 # The Cloudflare Worker automatically installs Node.js dependencies.
 #------------------------------------------------------------------------------
 
 main() {
 
-  DART_SASS_VERSION=1.89.1
-  HUGO_VERSION=0.147.7
+  HYPERTEMPLATES_VERSION=0.14.2
+  arch=$(uname -m)
+  if [[ "$arch" == "x86_64" ]]; then
+      export export LINUX_ARCHITECTURE="amd64"
+  elif [[ "$arch" == "arm64" || "$arch" == "aarch64" ]]; then
+      export export LINUX_ARCHITECTURE="arm64"
+  else
+      echo "Unsupported architecture: $arch"
+      exit 1
+  fi
 
-  export TZ=Europe/Oslo
+  export TZ=America/Los_Angeles
 
-  # Install Dart Sass
-  echo "Installing Dart Sass v${DART_SASS_VERSION}..."
-  curl -LJO "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz"
-  tar -xf "dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz"
-  cp -r dart-sass/ /opt/buildhome
-  rm -rf dart-sass*
+  # Install HyperTemplates
 
-  # Install Hugo
-  echo "Installing Hugo v${HUGO_VERSION}..."
-  curl -LJO https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz
-  tar -xf "hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
-  cp hugo /opt/buildhome
-  rm LICENSE README.md hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz
+  echo "Installing HyperTemplates v${HYPERTEMPLATES_VERSION}..."
+
+  # https://hypertemplates.net/downloads/hyperctl_0.14.2_linux_arm64.tar.gz
+  curl -LO https://hypertemplates.net/downloads/hyperctl_${HYPERTEMPLATES_VERSION}_linux_${LINUX_ARCHITECTURE}.tar.gz
+  tar -xzf hyperctl_${HYPERTEMPLATES_VERSION}_linux_${LINUX_ARCHITECTURE}.tar.gz
+  chmod +x hyperctl
+  cp hyperctl /opt/buildhome
+  rm hyperctl hyperctl_${HYPERTEMPLATES_VERSION}_linux_${LINUX_ARCHITECTURE}.tar.gz
+  export HYPER_CONFIG=site.yaml
 
   # Set PATH
   echo "Setting the PATH environment variable..."
-  export PATH=/opt/buildhome:/opt/buildhome/dart-sass:$PATH
+  export PATH=/opt/buildhome:$PATH
 
   # Verify installed versions
   echo "Verifying installations..."
-  echo Dart Sass: "$(sass --version)"
   echo Go: "$(go version)"
-  echo Hugo: "$(hugo version)"
+  echo HyperTemplates: "$(hyperctl)"
   echo Node.js: "$(node --version)"
 
-  # https://gohugo.io/methods/page/gitinfo/#hosting-considerations
-  git fetch --recurse-submodules --unshallow
-
-  # https://github.com/gohugoio/hugo/issues/9810
-  git config core.quotepath false
-
   # Build the site.
-  hugo --gc --minify
+  hyperctl build -i site
 
 }
 

@@ -1,0 +1,22 @@
+---
+base_url: https://hosting-cloudflare-worker
+title: Cloudflare Worker
+description: This website is powered by HyperTemplates.
+author:
+    href: /
+    name: Cloudflare Worker
+    username: '@hosting-cloudflare-worker'
+    favicon: /favicon.png
+favicon:
+    href: /favicon.png
+config:
+    builds_dir: builds
+    content_dir: content
+    data_dir: data
+    deployments_dir: deployments
+    drafts_dir: drafts
+    static_dir: static
+    theme: theme.json
+    tag_layout: default
+    tag_path: tags
+    tidy_mode: true

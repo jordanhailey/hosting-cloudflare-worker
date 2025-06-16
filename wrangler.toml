@@ -7,5 +7,5 @@ compatibility_date = "2025-05-26"
 command = "./build.sh"
 
 [assets]
-directory = "./public"
+directory = "./builds/site"
 not_found_handling = "404-page"
