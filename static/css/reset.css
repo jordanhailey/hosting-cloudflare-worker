@@ -48,6 +48,7 @@ form :where(button, input[type="submit"], input[type="reset"]) {
 /* Images */
 img, picture, video, canvas, svg {
     display: block;
+    max-width: 100%;
 }
 svg {
     fill: currentColor;

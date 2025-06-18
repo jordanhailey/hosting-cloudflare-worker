@@ -10,6 +10,8 @@ This is my second blog post using [HyperTemplates].
 
 I'm currently working through the [tutorials] to learn how everything works and start customizing my website.
 
+![photo](photo.jpg)
+
 
 <!-- Links -->
 [HyperTemplates]: https://preview.hypertemplates.net
